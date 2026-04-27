@@ -17,23 +17,38 @@ const db = getFirestore(app);
 
 // AUTH FUNCTIONS
 window.toggleAuth = () => {
-    const l = document.getElementById('login-form'), s = document.getElementById('signup-form');
-    l.style.display = l.style.display==='none'?'block':'none';
-    s.style.display = s.style.display==='none'?'block':'none';
+    const l = document.getElementById('login-form');
+    const s = document.getElementById('signup-form');
+    l.style.display = l.style.display === 'none' ? 'block' : 'none';
+    s.style.display = s.style.display === 'none' ? 'block' : 'none';
 };
 
 window.handleSignup = async () => {
-    const n = document.getElementById('reg-name').value, e = document.getElementById('reg-email').value, p = document.getElementById('reg-pass').value;
+    const n = document.getElementById('reg-name').value;
+    const e = document.getElementById('reg-email').value;
+    const p = document.getElementById('reg-pass').value;
     try {
         const res = await createUserWithEmailAndPassword(auth, e, p);
-        await setDoc(doc(db, "users", res.user.uid), { fullName: n, email: e, usdtBalance: 0, goldBalance: 0 });
+        await setDoc(doc(db, "users", res.user.uid), { 
+            fullName: n, 
+            email: e, 
+            usdtBalance: 0, 
+            goldBalance: 0 
+        });
         alert("Account Created!");
-    } catch (err) { alert(err.message); }
+    } catch (err) { 
+        alert(err.message); 
+    }
 };
 
 window.handleLogin = async () => {
-    const e = document.getElementById('email').value, p = document.getElementById('password').value;
-    try { await signInWithEmailAndPassword(auth, e, p); } catch (err) { alert(err.message); }
+    const e = document.getElementById('email').value;
+    const p = document.getElementById('password').value;
+    try { 
+        await signInWithEmailAndPassword(auth, e, p); 
+    } catch (err) { 
+        alert(err.message); 
+    }
 };
 
 window.logout = () => signOut(auth);
