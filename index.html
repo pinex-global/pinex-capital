@@ -3,139 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pinex Capital | Global Gold & Digital Assets</title>
+    <title>Pinex Capital | Global Gold & Assets</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body><!-- Auth Container -->
-<div id="auth-gate" class="card">
-    <h2 class="gold-text">Pinex Capital Login</h2>
-    <div id="login-form">
-        <input type="email" id="email" placeholder="Email Address">
-        <input type="password" id="password" placeholder="Password">
-        <button onclick="handleLogin()">Login</button>
-        <p onclick="toggleAuth()">Don't have an account? <span class="gold-text">Sign Up</span></p>
-    </div>
-    
-    <div id="signup-form" style="display:none;">
-        <input type="text" id="reg-name" placeholder="Full Name">
-        <input type="email" id="reg-email" placeholder="Email Address">
-        <input type="password" id="reg-pass" placeholder="Create Password">
-        <button onclick="handleSignup()">Create Account</button>
-        <p onclick="toggleAuth()">Already have an account? <span class="gold-text">Login</span></p>
-    </div>
-</div>
+<body>
 
-<!-- Wrap your existing Dashboard inside this div -->
-<div id="main-dashboard" style="display:none;">
-    <!-- Your existing Portfolio, Trade, and Tickers code goes here -->
-</div>
-
-
-   <!-- Top Market Ticker -->
-    <div class="market-ticker">
-        <div class="ticker-item">Gold (oz): <span id="gold-price" class="gold-text">$2,350.40</span></div>
-        <div class="ticker-item">BTC: <span id="btc-price" class="gold-text">Loading...</span></div>
-        <div class="ticker-item">SOL: <span id="sol-price" class="gold-text">Loading...</span></div>
-    </div>
-
-    <div class="container">
-        <header>
+    <!-- 1. AUTH GATE -->
+    <div id="auth-gate" class="container">
+        <div class="card" style="max-width: 400px; margin: 80px auto; text-align: center;">
             <h1 class="gold-text">PINEX CAPITAL</h1>
-            <p>Secure Institutional-Grade Gold Management</p>
-        </header>
-
-        <!-- Main Portfolio Dashboard -->
-        <section class="card portfolio-grid">
-            <div>
-                <p class="label">Total Account Balance</p>
-                <h1 id="total-balance">$0.00</h1>
-                <p id="pl-tracker" style="color: #00ff00;">+$0.00 (0%)</p>
+            <div id="login-form">
+                <h3>Login</h3>
+                <input type="email" id="email" placeholder="Email Address">
+                <input type="password" id="password" placeholder="Password">
+                <button onclick="handleLogin()">Login</button>
+                <p>New here? <span class="gold-text" onclick="toggleAuth()" style="cursor:pointer">Create Account</span></p>
             </div>
-            <div class="asset-breakdown">
-                <div class="asset"><span>Physical Gold:</span> <span id="gold-bal" class="gold-text">0.00 oz</span></div>
-                <div class="asset"><span>Crypto Wallet:</span> <span id="usdt-bal" class="gold-text">0.00 USDT</span></div>
+            <div id="signup-form" style="display:none;">
+                <h3>Sign Up</h3>
+                <input type="text" id="reg-name" placeholder="Full Name">
+                <input type="email" id="reg-email" placeholder="Email Address">
+                <input type="password" id="reg-pass" placeholder="Create Password">
+                <button onclick="handleSignup()">Sign Up</button>
+                <p>Have an account? <span class="gold-text" onclick="toggleAuth()" style="cursor:pointer">Login</span></p>
             </div>
-        </section>
-
-        <!-- Deposit & Trade Grid -->
-        <div class="grid-2">
-            <!-- Deposit Section -->
-            <div class="card">
-                <h3 class="gold-text">Add Funds</h3>
-                <p class="small">Send USDT (TRC20) or SOL to deposit.</p>
-                <div class="wallet-box">
-                    <p><strong>USDT:</strong> <span id="trcAddr">T_YOUR_TRC20_ADDRESS</span></p>
-                    <p><strong>SOL:</strong> <span id="solAddr">YOUR_SOLANA_ADDRESS</span></p>
-                </div>
-                <form id="depositForm">
-                    <input type="number" id="depAmount" placeholder="Amount Sent (Min $200)" required>
-                    <input type="text" id="txid" placeholder="Transaction Hash (TxID)" required>
-                    <button type="submit">Verify Deposit</button>
-                </form>
-            </div><!-- Withdrawal Section -->
-<div class="card">
-    <h3 class="gold-text">Withdraw Assets</h3>
-    <select id="withdraw-asset">
-        <option value="usdt">USDT (TRC20)</option>
-        <option value="sol">Solana (SOL)</option>
-    </select>
-    <input type="number" placeholder="Amount to Withdraw">
-    <input type="text" placeholder="Your Receiving Wallet Address">
-    <button style="background: #ff4444; color: white;">Request Withdrawal</button>
-    <p class="small">Withdrawals are processed within 24 hours after security audit.</p>
-</div>
-
-<!-- Price Alerts Section -->
-<div class="card">
-    <h3 class="gold-text">Price Alerts</h3>
-    <div class="grid-2">
-        <input type="number" id="alert-price" placeholder="Target Price (e.g. 2500)">
-        <button onclick="setAlert()">Set Gold Alert</button>
-    </div>
-</div>
-
-
-            <!-- Trade Section -->
-            <div class="card">
-                <h3 class="gold-text">Swap USDT for Gold</h3>
-                <div class="trade-box">
-                    <input type="number" id="tradeAmount" placeholder="USDT to Spend" oninput="calcTrade()">
-                    <div class="arrow">↓</div>
-                    <input type="text" id="goldReceive" placeholder="Gold Received (oz)" readonly>
-                    <button onclick="confirmTrade()" class="buy-btn">Execute Trade</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Global KYC Section -->
-        <div class="card" id="kycArea">
-            <h3 class="gold-text">Global Identity Verification</h3>
-            <form id="kycForm" class="kyc-grid">
-                <input type="text" placeholder="Full Legal Name" required>
-                <select id="countrySelect" required>
-                    <option value="">Select Country</option>
-                    <option value="NG">Nigeria</option>
-                    <option value="US">United States</option>
-                    <option value="GB">United Kingdom</option>
-                    <option value="ZA">South Africa</option>
-                    <option value="AE">United Arab Emirates</option>
-                </select>
-                <input type="file" id="idUpload" required>
-                <button type="submit">Submit KYC Documents</button>
-            </form>
         </div>
     </div>
 
-    <script src="script.js"></script>
-        ...
-    <script src="script.js"></script>
-    <!-- Paste the Tawk.to Script here -->
+    <!-- 2. MAIN DASHBOARD -->
+    <div id="main-dashboard" style="display:none;">
+        <div class="market-ticker">
+            <div>Gold: <span id="gold-price" class="gold-text">$2,350.40</span></div>
+            <div>BTC: <span id="btc-price" class="gold-text">...</span></div>
+            <div>SOL: <span id="sol-price" class="gold-text">...</span></div>
+        </div>
+
+        <div class="container">
+            <header style="display: flex; justify-content: space-between; align-items: center; padding: 20px 0;">
+                <h2 class="gold-text">Pinex Dashboard</h2>
+                <button onclick="logout()" style="width: auto; background: #ff4444; padding: 5px 15px;">Logout</button>
+            </header>
+
+            <!-- Portfolio Summary -->
+            <div class="card portfolio-grid">
+                <div>
+                    <p>Available Balance</p>
+                    <h1 id="total-balance">$0.00</h1>
+                    <p id="kyc-badge" style="font-size: 0.8rem; color: orange;">KYC: Pending</p>
+                </div>
+                <div class="asset-breakdown">
+                    <p>Gold: <span id="gold-bal" class="gold-text">0.00 oz</span></p>
+                    <p>USDT: <span id="usdt-bal" class="gold-text">0.00 USDT</span></p>
+                </div>
+            </div>
+
+            <!-- Operations Grid -->
+            <div class="grid-2">
+                <!-- Deposit & KYC -->
+                <div class="card">
+                    <h3 class="gold-text">Global KYC & Deposit</h3>
+                    <p class="small">Step 1: Upload ID (Passport/National ID)</p>
+                    <input type="file" id="kycFile" style="font-size: 0.7rem;">
+                    <button onclick="alert('KYC Documents Uploaded for Review')">Upload ID</button>
+                    <hr style="border: 0.5px solid #333; margin: 15px 0;">
+                    <p class="small">Step 2: Deposit USDT (TRC20)</p>
+                    <p style="font-size: 0.7rem; background: #000; padding: 5px;">T-YOUR-WALLET-ADDRESS</p>
+                    <input type="text" id="txid" placeholder="Transaction Hash (TxID)">
+                    <button onclick="alert('Deposit submitted for Admin audit')">Verify Deposit</button>
+                </div>
+
+                <!-- Buy Gold -->
+                <div class="card">
+                    <h3 class="gold-text">Purchase Gold</h3>
+                    <p class="small">Convert USDT to physical gold vault storage.</p>
+                    <input type="number" id="tradeAmount" placeholder="Amount to spend" oninput="calcTrade()">
+                    <input type="text" id="goldReceive" placeholder="oz to receive" readonly>
+                    <button onclick="confirmTrade()">Execute Trade</button>
+                </div>
+
+                <!-- Withdrawal Section -->
+                <div class="card">
+                    <h3 class="gold-text">Withdraw Funds</h3>
+                    <select id="withdrawAsset">
+                        <option>USDT (TRC20)</option>
+                        <option>Solana (SOL)</option>
+                    </select>
+                    <input type="number" placeholder="Amount">
+                    <input type="text" placeholder="Recipient Wallet Address">
+                    <button onclick="alert('Withdrawal Request Sent. Audit takes 24hrs.')" style="background:#444;">Request Withdrawal</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase & Custom Scripts -->
+    <script type="module" src="script.js"></script>
+
+    <!-- Tawk.to Live Chat -->
     <script type="text/javascript">
     var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
     (function(){
     var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
     s1.async=true;
-    s1.src='https://embed.tawk.to/69efbe353dea021c3775b87b/1jn87u152';
+    s1.src='https://tawk.to';
     s1.charset='UTF-8';
     s1.setAttribute('crossorigin','*');
     s0.parentNode.insertBefore(s1,s0);
