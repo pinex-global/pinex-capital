@@ -72,7 +72,28 @@
                     <input type="text" id="txid" placeholder="Transaction Hash (TxID)" required>
                     <button type="submit">Verify Deposit</button>
                 </form>
-            </div>
+            </div><!-- Withdrawal Section -->
+<div class="card">
+    <h3 class="gold-text">Withdraw Assets</h3>
+    <select id="withdraw-asset">
+        <option value="usdt">USDT (TRC20)</option>
+        <option value="sol">Solana (SOL)</option>
+    </select>
+    <input type="number" placeholder="Amount to Withdraw">
+    <input type="text" placeholder="Your Receiving Wallet Address">
+    <button style="background: #ff4444; color: white;">Request Withdrawal</button>
+    <p class="small">Withdrawals are processed within 24 hours after security audit.</p>
+</div>
+
+<!-- Price Alerts Section -->
+<div class="card">
+    <h3 class="gold-text">Price Alerts</h3>
+    <div class="grid-2">
+        <input type="number" id="alert-price" placeholder="Target Price (e.g. 2500)">
+        <button onclick="setAlert()">Set Gold Alert</button>
+    </div>
+</div>
+
 
             <!-- Trade Section -->
             <div class="card">
