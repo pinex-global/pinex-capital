@@ -1,3 +1,7 @@
+/* Add this to style.css */
+#signup-form, #main-dashboard {
+    display: none;
+}
 :root {
     --gold: #D4AF37;
     --dark-bg: #0b0c10;
