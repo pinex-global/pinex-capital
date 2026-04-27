@@ -68,3 +68,7 @@ window.calcTrade = () => {
 };
 
 window.confirmTrade = () => alert("Trade submitted to Admin for approval.");
+window.confirmTrade = () => {
+    alert("Order Received! Your trade is pending admin approval to verify liquidity.");
+};
+
