@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pinex Capital | Global Gold & Digital Assets</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Top Market Ticker -->
+    <div class="market-ticker">
+        <div class="ticker-item">Gold (oz): <span id="gold-price" class="gold-text">$2,350.40</span></div>
+        <div class="ticker-item">BTC: <span id="btc-price" class="gold-text">Loading...</span></div>
+        <div class="ticker-item">SOL: <span id="sol-price" class="gold-text">Loading...</span></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1 class="gold-text">PINEX CAPITAL</h1>
+            <p>Secure Institutional-Grade Gold Management</p>
+        </header>
+
+        <!-- Main Portfolio Dashboard -->
+        <section class="card portfolio-grid">
+            <div>
+                <p class="label">Total Account Balance</p>
+                <h1 id="total-balance">$0.00</h1>
+                <p id="pl-tracker" style="color: #00ff00;">+$0.00 (0%)</p>
+            </div>
+            <div class="asset-breakdown">
+                <div class="asset"><span>Physical Gold:</span> <span id="gold-bal" class="gold-text">0.00 oz</span></div>
+                <div class="asset"><span>Crypto Wallet:</span> <span id="usdt-bal" class="gold-text">0.00 USDT</span></div>
+            </div>
+        </section>
+
+        <!-- Deposit & Trade Grid -->
+        <div class="grid-2">
+            <!-- Deposit Section -->
+            <div class="card">
+                <h3 class="gold-text">Add Funds</h3>
+                <p class="small">Send USDT (TRC20) or SOL to deposit.</p>
+                <div class="wallet-box">
+                    <p><strong>USDT:</strong> <span id="trcAddr">T_YOUR_TRC20_ADDRESS</span></p>
+                    <p><strong>SOL:</strong> <span id="solAddr">YOUR_SOLANA_ADDRESS</span></p>
+                </div>
+                <form id="depositForm">
+                    <input type="number" id="depAmount" placeholder="Amount Sent (Min $200)" required>
+                    <input type="text" id="txid" placeholder="Transaction Hash (TxID)" required>
+                    <button type="submit">Verify Deposit</button>
+                </form>
+            </div>
+
+            <!-- Trade Section -->
+            <div class="card">
+                <h3 class="gold-text">Swap USDT for Gold</h3>
+                <div class="trade-box">
+                    <input type="number" id="tradeAmount" placeholder="USDT to Spend" oninput="calcTrade()">
+                    <div class="arrow">↓</div>
+                    <input type="text" id="goldReceive" placeholder="Gold Received (oz)" readonly>
+                    <button onclick="confirmTrade()" class="buy-btn">Execute Trade</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Global KYC Section -->
+        <div class="card" id="kycArea">
+            <h3 class="gold-text">Global Identity Verification</h3>
+            <form id="kycForm" class="kyc-grid">
+                <input type="text" placeholder="Full Legal Name" required>
+                <select id="countrySelect" required>
+                    <option value="">Select Country</option>
+                    <option value="NG">Nigeria</option>
+                    <option value="US">United States</option>
+                    <option value="GB">United Kingdom</option>
+                    <option value="ZA">South Africa</option>
+                    <option value="AE">United Arab Emirates</option>
+                </select>
+                <input type="file" id="idUpload" required>
+                <button type="submit">Submit KYC Documents</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
