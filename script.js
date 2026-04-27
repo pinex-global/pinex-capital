@@ -1,119 +1,70 @@
-// 1. Toggle between Login and Signup Forms
-function toggleAuth() {
-    const loginForm = document.getElementById('login-form');
-    const signupForm = document.getElementById('signup-form');
-    
-    if (loginForm.style.display === "none") {
-        loginForm.style.display = "block";
-        signupForm.style.display = "none";
-    } else {
-        loginForm.style.display = "none";
-        signupForm.style.display = "block";
-    }
-}
+import { initializeApp } from "https://gstatic.com";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://gstatic.com";
+import { getFirestore, doc, setDoc, getDoc } from "https://gstatic.com";
 
-// 2. Handle Login (Simulation for now)
-function handleLogin() {
-    const email = document.getElementById('email').value;
-    const pass = document.getElementById('password').value;
+const firebaseConfig = {
+  apiKey: "AIzaSyBHy0e3Lg8doEFiUOhkScpZk-1eRnnes30",
+  authDomain: "://firebaseapp.com",
+  projectId: "pinex-capital",
+  storageBucket: "pinex-capital.firebasestorage.app",
+  messagingSenderId: "971978946939",
+  appId: "1:971978946939:web:2dca7444752540f44125de"
+};
 
-    if (email === "" || pass === "") {
-        alert("Please enter your credentials.");
-        return;
-    }
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-    // Hide Login Gate, Show Dashboard
-    document.getElementById('auth-gate').style.display = "none";
-    document.getElementById('main-dashboard').style.display = "block";
-    
-    alert("Welcome back to Pinex Capital!");
-    
-    // Start your price tickers once logged in
-    fetchPrices(); 
-}
+// AUTH FUNCTIONS
+window.toggleAuth = () => {
+    const l = document.getElementById('login-form'), s = document.getElementById('signup-form');
+    l.style.display = l.style.display==='none'?'block':'none';
+    s.style.display = s.style.display==='none'?'block':'none';
+};
 
-// 3. Handle Signup (Simulation for now)
-function handleSignup() {
-    const name = document.getElementById('reg-name').value;
-    const email = document.getElementById('reg-email').value;
-    const pass = document.getElementById('reg-pass').value;
-
-    if (!name || !email || !pass) {
-        alert("Please fill in all fields.");
-        return;
-    }
-
-    alert(`Account created for ${name}! You can now login.`);
-    toggleAuth(); // Switch back to login form
-}
-
-// 4. Withdrawal Request Logic
-function requestWithdrawal() {
-    alert("Withdrawal request submitted! Our security team will audit the transaction and release funds within 24 hours.");
-}
-// Simulated App State
-let balance = 0;
-let goldBalance = 0;
-const GOLD_PRICE = 2350.40;
-
-// 1. Fetch Real-time Crypto Prices
-async function fetchPrices() {
+window.handleSignup = async () => {
+    const n = document.getElementById('reg-name').value, e = document.getElementById('reg-email').value, p = document.getElementById('reg-pass').value;
     try {
-        const res = await fetch('https://coingecko.com');
-        const data = await res.json();
-        document.getElementById('btc-price').innerText = "$" + data.bitcoin.usd.toLocaleString();
-        document.getElementById('sol-price').innerText = "$" + data.solana.usd.toLocaleString();
-    } catch (e) { console.log("Price fetch failed"); }
-}
+        const res = await createUserWithEmailAndPassword(auth, e, p);
+        await setDoc(doc(db, "users", res.user.uid), { fullName: n, email: e, usdtBalance: 0, goldBalance: 0 });
+        alert("Account Created!");
+    } catch (err) { alert(err.message); }
+};
 
-// 2. Handle Deposits (Admin Simulation)
-document.getElementById('depositForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const amount = parseFloat(document.getElementById('depAmount').value);
-    const txid = document.getElementById('txid').value;
+window.handleLogin = async () => {
+    const e = document.getElementById('email').value, p = document.getElementById('password').value;
+    try { await signInWithEmailAndPassword(auth, e, p); } catch (err) { alert(err.message); }
+};
 
-    if (amount < 200) return alert("Minimum deposit is $200");
+window.logout = () => signOut(auth);
 
-    alert(`TxID: ${txid} Submitted.\nOur Admin will verify this on the blockchain. Funds will appear within 60 minutes.`);
-    
-    // FOR DEMO: Automatically approve after 5 seconds
-    setTimeout(() => {
-        balance += amount;
-        updateUI();
-        alert("Deposit Approved! Your balance is now active.");
-    }, 5000);
+// STATE OBSERVER
+onAuthStateChanged(auth, async (user) => {
+    const gate = document.getElementById('auth-gate'), dash = document.getElementById('main-dashboard');
+    if (user) {
+        gate.style.display = "none"; dash.style.display = "block";
+        const snap = await getDoc(doc(db, "users", user.uid));
+        if (snap.exists()) {
+            const d = snap.data();
+            document.getElementById('total-balance').innerText = "$" + d.usdtBalance.toLocaleString();
+            document.getElementById('gold-bal').innerText = d.goldBalance.toFixed(4) + " oz";
+            document.getElementById('usdt-bal').innerText = d.usdtBalance + " USDT";
+        }
+        fetchPrices();
+    } else { gate.style.display = "block"; dash.style.display = "none"; }
 });
 
-// 3. Trade Logic (USDT to Gold)
-function calcTrade() {
-    const spend = document.getElementById('tradeAmount').value;
-    const receive = spend / GOLD_PRICE;
-    document.getElementById('goldReceive').value = spend > 0 ? receive.toFixed(4) + " oz" : "";
+// TICKER & TRADE
+async function fetchPrices() {
+    const res = await fetch('https://coingecko.com');
+    const data = await res.json();
+    document.getElementById('btc-price').innerText = "$" + data.bitcoin.usd.toLocaleString();
+    document.getElementById('sol-price').innerText = "$" + data.solana.usd.toLocaleString();
 }
 
-function confirmTrade() {
-    const spend = parseFloat(document.getElementById('tradeAmount').value);
-    if (spend > balance) return alert("Insufficient funds. Deposit USDT first.");
-    
-    balance -= spend;
-    goldBalance += (spend / GOLD_PRICE);
-    updateUI();
-    alert("Trade Successful! Your gold is now secured in the vault.");
-}
+window.calcTrade = () => {
+    const s = document.getElementById('tradeAmount').value;
+    document.getElementById('goldReceive').value = (s / 2350.40).toFixed(4) + " oz";
+};
 
-// 4. KYC Logic
-document.getElementById('kycForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    document.getElementById('kycArea').innerHTML = "<h3 style='color:orange'>KYC STATUS: PENDING REVIEW</h3><p>Your global documents are being checked against AML blacklists.</p>";
-});
-
-// 5. Update Interface
-function updateUI() {
-    document.getElementById('total-balance').innerText = "$" + balance.toLocaleString();
-    document.getElementById('gold-bal').innerText = goldBalance.toFixed(4) + " oz";
-    document.getElementById('usdt-bal').innerText = balance.toLocaleString() + " USDT";
-}
-
-// Initialize
-fetchPrices();
-setInterval(fetchPrices, 60000);
+window.confirmTrade = () => alert("Trade submitted to Admin for approval.");
