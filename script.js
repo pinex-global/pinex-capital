@@ -1,3 +1,56 @@
+// 1. Toggle between Login and Signup Forms
+function toggleAuth() {
+    const loginForm = document.getElementById('login-form');
+    const signupForm = document.getElementById('signup-form');
+    
+    if (loginForm.style.display === "none") {
+        loginForm.style.display = "block";
+        signupForm.style.display = "none";
+    } else {
+        loginForm.style.display = "none";
+        signupForm.style.display = "block";
+    }
+}
+
+// 2. Handle Login (Simulation for now)
+function handleLogin() {
+    const email = document.getElementById('email').value;
+    const pass = document.getElementById('password').value;
+
+    if (email === "" || pass === "") {
+        alert("Please enter your credentials.");
+        return;
+    }
+
+    // Hide Login Gate, Show Dashboard
+    document.getElementById('auth-gate').style.display = "none";
+    document.getElementById('main-dashboard').style.display = "block";
+    
+    alert("Welcome back to Pinex Capital!");
+    
+    // Start your price tickers once logged in
+    fetchPrices(); 
+}
+
+// 3. Handle Signup (Simulation for now)
+function handleSignup() {
+    const name = document.getElementById('reg-name').value;
+    const email = document.getElementById('reg-email').value;
+    const pass = document.getElementById('reg-pass').value;
+
+    if (!name || !email || !pass) {
+        alert("Please fill in all fields.");
+        return;
+    }
+
+    alert(`Account created for ${name}! You can now login.`);
+    toggleAuth(); // Switch back to login form
+}
+
+// 4. Withdrawal Request Logic
+function requestWithdrawal() {
+    alert("Withdrawal request submitted! Our security team will audit the transaction and release funds within 24 hours.");
+}
 // Simulated App State
 let balance = 0;
 let goldBalance = 0;
