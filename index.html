@@ -6,9 +6,32 @@
     <title>Pinex Capital | Global Gold & Digital Assets</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body><!-- Auth Container -->
+<div id="auth-gate" class="card">
+    <h2 class="gold-text">Pinex Capital Login</h2>
+    <div id="login-form">
+        <input type="email" id="email" placeholder="Email Address">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="handleLogin()">Login</button>
+        <p onclick="toggleAuth()">Don't have an account? <span class="gold-text">Sign Up</span></p>
+    </div>
+    
+    <div id="signup-form" style="display:none;">
+        <input type="text" id="reg-name" placeholder="Full Name">
+        <input type="email" id="reg-email" placeholder="Email Address">
+        <input type="password" id="reg-pass" placeholder="Create Password">
+        <button onclick="handleSignup()">Create Account</button>
+        <p onclick="toggleAuth()">Already have an account? <span class="gold-text">Login</span></p>
+    </div>
+</div>
 
-    <!-- Top Market Ticker -->
+<!-- Wrap your existing Dashboard inside this div -->
+<div id="main-dashboard" style="display:none;">
+    <!-- Your existing Portfolio, Trade, and Tickers code goes here -->
+</div>
+
+
+   <!-- Top Market Ticker -->
     <div class="market-ticker">
         <div class="ticker-item">Gold (oz): <span id="gold-price" class="gold-text">$2,350.40</span></div>
         <div class="ticker-item">BTC: <span id="btc-price" class="gold-text">Loading...</span></div>
