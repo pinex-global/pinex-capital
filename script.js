@@ -1,3 +1,4 @@
+console.log("Script is loading!");
 import { initializeApp } from "https://gstatic.com";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://gstatic.com";
 import { getFirestore, doc, setDoc, getDoc } from "https://gstatic.com";
