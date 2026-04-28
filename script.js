@@ -1,10 +1,11 @@
-console.log("PINEX SCRIPT ACTIVE"); // This tells us the file is loading
+// TOP OF SCRIPT.JS
+console.log("PINEX SCRIPT IS LIVE");
+alert("If you see this, your script is working!");
 
 import { initializeApp } from "https://gstatic.com";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://gstatic.com";
 import { getFirestore, doc, setDoc, getDoc } from "https://gstatic.com";
 
-// YOUR CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyBHy0e3Lg8doEFiUOhkScpZk-1eRnnes30",
   authDomain: "://firebaseapp.com",
@@ -18,9 +19,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// ATTACH TO WINDOW (This fixes the "Not Defined" error)
 window.toggleAuth = () => {
-    console.log("Toggling forms...");
     const l = document.getElementById('login-form');
     const s = document.getElementById('signup-form');
     if (l.style.display === 'none') {
@@ -49,20 +48,11 @@ window.handleLogin = async () => {
     try { await signInWithEmailAndPassword(auth, e, p); } catch (err) { alert(err.message); }
 };
 
-window.logout = () => signOut(auth);
-
-// AUTH STATE
 onAuthStateChanged(auth, async (user) => {
     const gate = document.getElementById('auth-gate');
     const dash = document.getElementById('main-dashboard');
     if (user) {
         gate.style.display = "none"; dash.style.display = "block";
-        const snap = await getDoc(doc(db, "users", user.uid));
-        if (snap.exists()) {
-            const d = snap.data();
-            document.getElementById('total-balance').innerText = "$" + d.usdtBalance.toLocaleString();
-            document.getElementById('gold-bal').innerText = d.goldBalance.toFixed(4) + " oz";
-        }
     } else {
         gate.style.display = "block"; dash.style.display = "none";
     }
