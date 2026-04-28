@@ -1,8 +1,3 @@
-// Version 2.0 - Update
-// TOP OF SCRIPT.JS
-console.log("PINEX SCRIPT IS LIVE");
-alert("If you see this, your script is working!");
-
 import { initializeApp } from "https://gstatic.com";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://gstatic.com";
 import { getFirestore, doc, setDoc, getDoc } from "https://gstatic.com";
