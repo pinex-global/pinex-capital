@@ -1,3 +1,4 @@
+// Version 2.0 - Update
 // TOP OF SCRIPT.JS
 console.log("PINEX SCRIPT IS LIVE");
 alert("If you see this, your script is working!");
